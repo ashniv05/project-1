@@ -1,13 +1,14 @@
 import { LitElement, html, css } from "lit";
-import "./site-card.js";
+import { DDDSuper  } from "@haxtheweb/d-d-d";
+import "./hax-search.js";
 
-export class SiteAnalyzer extends LitElement {
+ class SiteAnalyzer extends DDDSuper(LitElement) {
   static get properties() {
     return {
       url: { type: String },
-      metadata: { type: Object },
+      siteData: { type: Array, attribute: "site-data" },
       items: { type: Array },
-      loading: { type: Boolean, reflect: true },
+      loading: { type: Boolean },
     };
   }
 
@@ -15,34 +16,72 @@ export class SiteAnalyzer extends LitElement {
     return css`
       :host {
         display: block;
-        padding: 16px;
       }
+
       .input-section {
         display: flex;
+        align-items: center;
+        background-color: #fff; 
+        border-radius: 24px;
         gap: 10px;
+        width: 100%;
+        padding: var(--ddd-spacing-1) var(--ddd-spacing-3);
+        margin: 20px auto;
         margin-bottom: 20px;
       }
-      input[type="text"] {
-        flex-grow: 1;
-        padding: 8px;
+      .search-section:hover {
+        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35)
       }
-      button {
-        padding: 8px 16px;
+      .search-icon {
+        display: flex;
+        align-items: center;
+        background-color: #75d9a2; 
+      }
+      .search-input::placeholder {
+        color: #79267d
+      }
+      .search-input:focus {
+        outline: none;
+      }
+       button { 
+        background-color: #11dd07; 
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: var(--ddd-spacing-1) var(--ddd-spacing-3);
         cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
       }
-      .overview {
-        border: 1px solid #ddd;
-        padding: 16px;
-        margin-bottom: 20px;
+
+      button:hover {
+        background-color: #3999af;
       }
-      .overview img {
-        max-width: 100px;
-        margin-top: 10px;
-      }
+
       .results {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 16px;
+        visibility: visible;
+        height: 100%;
+        opacity: 1;
+        transition-delay: 0.5s;
+        transition: 0.5s all ease-in-out;
+
+      }
+      details {
+        margin: 16px;
+        padding: 16px;
+        background-size: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3)
+      }
+      summary {
+        font-size: 24px;
+        padding: 16px;
+        color: white;
+      }
+      input {
+        font-size: 24px;
+        line-height: 40px;
+        width: 100%;
       }
     `;
   }
@@ -50,12 +89,13 @@ export class SiteAnalyzer extends LitElement {
   constructor() {
     super();
     this.url = "";
-    this.metadata = {};
+    this.siteData = {};
     this.items = [];
     this.loading = false;
   }
 
   render() {
+    console.log("test")
     return html`
       <h2>HAX Site Analyzer</h2>
       <div class="input-section">
@@ -63,17 +103,17 @@ export class SiteAnalyzer extends LitElement {
         <button @click="${this.analyzeSite}">Analyze</button>
       </div>
 
-      ${this.metadata && Object.keys(this.metadata).length > 0 ? html`
+      ${this.siteData && Object.keys(this.siteData).length > 0 ? html`
         <div class="overview">
           <h3>Site Overview</h3>
-          <p><strong>Name:</strong> ${this.metadata.title || 'N/A'}</p>
-          <p><strong>Description:</strong> ${this.metadata.description || 'N/A'}</p>
-          ${this.metadata.logo ? html`<img src="${this.metadata.logo}" alt="Site Logo" />` : ''}
-          <p><strong>Theme:</strong> ${this.metadata.theme || 'N/A'}</p>
-          <p><strong>Created:</strong> ${this.metadata.created || 'N/A'}</p>
-          <p><strong>Last Updated:</strong> ${this.metadata.updated || 'N/A'}</p>
-          <p><strong>Hex Code:</strong> ${this.metadata.hexCode || 'N/A'}</p>
-          <p><strong>Icon:</strong> ${this.metadata.icon || 'N/A'}</p>
+          <p><strong>Name:</strong> ${this.siteData.title || 'N/A'}</p>
+          <p><strong>Description:</strong> ${this.siteData.description || 'N/A'}</p>
+          ${this.siteData.logo ? html`<img src="${this.siteData.logo}" alt="Site Logo" />` : ''}
+          <p><strong>Theme:</strong> ${this.siteData.metadata.theme.name || 'N/A'}</p>
+          <p><strong>Created:</strong> ${this.siteData.created || 'N/A'}</p>
+          <p><strong>Last Updated:</strong> ${this.siteData.updated || 'N/A'}</p>
+          <p><strong>Hex Code:</strong> ${this.siteData.hexCode || 'N/A'}</p>
+          <p><strong>Icon:</strong> ${this.siteData.icon || 'N/A'}</p>
         </div>
       ` : ''}
 
@@ -83,7 +123,7 @@ export class SiteAnalyzer extends LitElement {
             title="${item.title || 'Untitled'}"
             image="${item.image || ''}"
             description="${item.description || 'No description available.'}"
-            updated="${item.updated || 'N/A'}"
+            updated="${item.metadata.updated || 'N/A'}"
             link="${item.slug}"
             sourceLink="${item.slug}/index.html"
           ></site-card>
@@ -116,7 +156,7 @@ export class SiteAnalyzer extends LitElement {
         return;
       }
 
-      this.metadata = data.metadata;
+      this.siteData = data;
       this.items = data.items;
     } catch (error) {
       alert("Error fetching or processing site.json: " + error.message);

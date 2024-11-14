@@ -8,65 +8,30 @@
   <meta name="Description" content="Demonstration for project-1">
 
   <style>
-    :root, html, body {
+    :root {
+    --global-hex-color: #7c69b9;
+    }
+    html, body {
       margin: 0;
       padding: 0;
     }
     #demo {
       margin: var(--ddd-spacing-2);
     }
-    project-1 {
+    hax-search {
       margin: var(--ddd-spacing-2);
       border: var(--ddd-border-md);
       border-radius: var(--ddd-radius-lg);
     }
-    project-1:hover {
+    hax-search:hover {
       box-shadow: var(--ddd-boxShadow-sm);
     }
     #example {
-      --project-1-font-size: var(--ddd-font-size-l);
+      --hax-search-font-size: var(--ddd-font-size-l);
       background-color: var(--ddd-accent-2);
       color: var(--ddd-primary-17);
     }
-    /* Additional styles for the site analyzer */
-    .input-section {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    input[type="text"] {
-      flex-grow: 1;
-      padding: 8px;
-    }
-    button {
-      padding: 8px 16px;
-      cursor: pointer;
-    }
-    .overview {
-      border: 1px solid #ddd;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-    .card {
-      border: 1px solid #ddd;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .card img {
-      width: 100%;
-      max-width: 150px;
-      height: auto;
-    }
-    .card h3 {
-      margin: 10px 0;
-    }
+
   </style>
   <title>project-1</title>
 </head>
@@ -74,153 +39,10 @@
 <body>
   <div id="demo">
     <h1>project-1</h1>
-    <h2>Site Analyzer</h2>
-    
-
-    <div class="input-section">
-      <label for="siteUrl">HAX Site</label>
-      <input type="text" id="siteUrl" placeholder="https://haxtheweb.org/site.json">
-      <button onclick="analyzeSite()">Analyze</button>
-    </div>
-
-    <!-- Overview section -->
-    <div id="overview" class="overview">
-      <h2>Overview</h2>
-      <p>Name: <span id="siteName"></span></p>
-      <p>Description: <span id="siteDescription"></span></p>
-      <p>Logo: <img id="siteLogo" alt="" /></p>
-      <p>Theme: <span id="siteTheme"></span></p>
-      <p>Created: <span id="siteCreated"></span></p>
-      <p>Last Updated: <span id="siteUpdated"></span></p>
-      <p>Hex Code: <span id="siteHexCode"></span></p>
-      <p>Icon: <span id="siteIcon"></span></p>
-    </div>
-
-    <!-- Cards container -->
-    <div id="cardsContainer" class="cards-container"></div>
+    <h2>Type JSON:</h2>
+    <site-analyzer></site-analyzer>
+ 
   </div>
-
-  <script type="module" src="./project-1.js"></script>
-
-  <!-- JavaScript for site analyzer -->
-  <script>
-    async function analyzeSite() {
-      const siteUrl = document.getElementById("siteUrl").value.trim();
-      if (!siteUrl) {
-        alert("Enter a URL.");
-        return;
-      }
-      
-      // Ensure the URL ends with 'site.json'
-      const url = siteUrl.endsWith("site.json") ? siteUrl : `${siteUrl}/site.json`;
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Failed to fetch site");
-        
-        const data = await response.json();
-        if (!data || !data.metadata || !data.items) {
-          alert("Invalid site.json");
-          return;
-        }
-        
-        displayOverview(data.metadata);
-        displayCards(data.items);
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    }
-
-    function displayOverview(metadata) {
-      document.getElementById("siteName").textContent = metadata.title || "N/A";
-      document.getElementById("siteDescription").textContent = metadata.description || "N/A";
-      document.getElementById("siteTheme").textContent = metadata.theme || "N/A";
-      document.getElementById("siteCreated").textContent = metadata.created || "N/A";
-      document.getElementById("siteUpdated").textContent = metadata.updated || "N/A";
-      document.getElementById("siteHexCode").textContent = metadata.hexCode || "N/A";
-
-      const logo = document.getElementById("siteLogo");
-      logo.src = metadata.logo || "";
-      logo.style.display = metadata.logo ? "block" : "none";
-
-      document.getElementById("siteIcon").innerHTML = metadata.icon ? `<simple-icon icon="${metadata.icon}"></simple-icon>` : "N/A";
-    }
-
-    function displayCards(items) {
-      const container = document.getElementById("cardsContainer");
-      container.innerHTML = ""; // Clear previous cards
-      
-      items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const img = document.createElement("img");
-        img.src = item.image || "placeholder.jpg"; // Fallback image
-        card.appendChild(img);
-
-        const title = document.createElement("h3");
-        title.textContent = item.title || "Untitled";
-        card.appendChild(title);
-
-        const updated = document.createElement("p");
-        updated.textContent = `Last updated: ${item.updated || "N/A"}`;
-        card.appendChild(updated);
-
-        const description = document.createElement("p");
-        description.textContent = item.description || "No description available.";
-        card.appendChild(description);
-
-        const openLink = document.createElement("a");
-        openLink.href = item.slug;
-        openLink.target = "_blank";
-        openLink.textContent = "Open in new window";
-        card.appendChild(openLink);
-
-        const sourceLink = document.createElement("a");
-        sourceLink.href = `${item.slug}/index.html`; 
-        sourceLink.target = "_blank";
-        sourceLink.textContent = "Open source";
-        card.appendChild(sourceLink);
-
-        container.appendChild(card);
-      });
-    }
-  </script>
-
-  <style>
-    #follow-the-white-rabbit {
-      margin: var(--ddd-spacing-4) auto 64px  16px;
-      background-color: var(--ddd-accent-4);
-      color: black;
-    }
-    #follow-the-white-rabbit[open] summary {
-      background-color: var(--ddd-accent-4) !important;
-      color: black;
-    }
-    #follow-the-white-rabbit[open] .content {
-      padding: 0 var(--ddd-spacing-4);
-    }
-    #follow-the-white-rabbit ul,
-    #follow-the-white-rabbit li {
-      padding: 0;
-      margin: 0;
-    }
-    #follow-the-white-rabbit li {
-      font-size: var(--ddd-font-size-xs);
-      list-style: none;
-    }
-    #follow-the-white-rabbit li strong,
-    #follow-the-white-rabbit li a {
-      padding: var(--ddd-spacing-2) var(--ddd-spacing-4);
-      color: black;
-      display: block;
-      font-weight: bold;
-    }
-    #follow-the-white-rabbit li:focus-within a,
-    #follow-the-white-rabbit li:hover a {
-      background-color: black;
-      color: blue;
-    }
-  </style>
+ <script type="module" src="./site-analyzer.js"></script>
 </body>
 </html>
