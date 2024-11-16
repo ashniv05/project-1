@@ -146,14 +146,14 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
         ${Object.keys(this.metadata).length > 0 ? html`
           <div class="overview">
             <h3>Site Overview</h3>
-            <p><strong>Name:</strong> ${this.metadata.title || 'N/A'}</p>
-            <p><strong>Description:</strong> ${this.metadata.description || 'N/A'}</p>
-            ${this.metadata.logo ? html`<img src="${this.metadata.logo}" alt="Site Logo" />` : ''}
-            <p><strong>Theme:</strong> ${this.metadata.theme || 'N/A'}</p>
-            <p><strong>Created:</strong> ${this.metadata.created || 'N/A'}</p>
-            <p><strong>Last Updated:</strong> ${this.metadata.updated || 'N/A'}</p>
-            <p><strong>Hex Code:</strong> ${this.metadata.hexCode || 'N/A'}</p>
-            <p><strong>Icon:</strong> ${this.metadata.icon || 'N/A'}</p>
+            <p><strong>Name:</strong> ${this.sitedata.title || 'N/A'}</p>
+            <p><strong>Description:</strong> ${this.sitedata.description || 'N/A'}</p>
+            ${this.metadata.logo ? html`<img src="${this.sitedata.metadata.site.logo}" alt="Site Logo" />` : ''}
+            <p><strong>Theme:</strong> ${this.sitedata.metadata.theme || 'N/A'}</p>
+            <p><strong>Created:</strong> ${this.sitedata.metadata.site.created || 'N/A'}</p>
+            <p><strong>Last Updated:</strong> ${this.sitedata.metadata.site.updated || 'N/A'}</p>
+            <p><strong>Hex Code:</strong> ${this.sitedata.metadata.theme.hexCode || 'N/A'}</p>
+            <p><strong>Icon:</strong> ${this.sitedata.metadata.theme.icon || 'N/A'}</p>
           </div>
         ` : ''}
 
@@ -189,21 +189,16 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
     this.loading = true;
     try {
       const response = await fetch(siteUrl);
-      if (!response.ok) throw new Error("Failed to fetch site.json");
-
       const data = await response.json();
-      if (!data || !data.metadata || !data.items) {
-        alert("Invalid site.json schema.");
-        this.loading = false;
-        return;
+      console.log("Fetched data:", data); // Debug log
+      if (!data.metadata || !data.items) {
+        throw new Error("Invalid site.json structure");
       }
-
       this.metadata = data.metadata;
       this.items = data.items;
     } catch (error) {
-      alert("Error fetching or processing site.json: " + error.message);
-    } finally {
-      this.loading = false;
+      console.error("Error:", error);
+      alert("Error fetching site.json: " + error.message);
     }
   }
 

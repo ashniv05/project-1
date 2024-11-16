@@ -1,17 +1,17 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper  } from "@haxtheweb/d-d-d";
-import "./hax-search.js";
+import "./site-card.js";
 
+ //class SiteAnalyzer extends DDDSuper(LitElement) {
+ // static get properties() {
+  //  return {
+    //  url: { type: String },
+      //siteData: { type: Array, attribute: "site-data" },
+     // items: { type: Array },
+      //loading: { type: Boolean },
+    //};
+ // }
  class SiteAnalyzer extends DDDSuper(LitElement) {
-  static get properties() {
-    return {
-      url: { type: String },
-      siteData: { type: Array, attribute: "site-data" },
-      items: { type: Array },
-      loading: { type: Boolean },
-    };
-  }
-
   static get styles() {
     return css`
       :host {
@@ -21,37 +21,34 @@ import "./hax-search.js";
       .input-section {
         display: flex;
         align-items: center;
-        background-color: #fff; 
-        border-radius: 24px;
-        gap: 10px;
-        width: 100%;
+        background-color: #fdf5f5; 
+        border-radius: var(--ddd-radius-sm);
+        border: 1px solid #fff;
+        width: 95%;
         padding: var(--ddd-spacing-1) var(--ddd-spacing-3);
-        margin: 20px auto;
+        margin: 10px auto;
         margin-bottom: 20px;
+        gap: 10px;
       }
-      .search-section:hover {
-        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35)
-      }
-      .search-icon {
-        display: flex;
-        align-items: center;
-        background-color: #75d9a2; 
-      }
-      .search-input::placeholder {
-        color: #79267d
-      }
-      .search-input:focus {
-        outline: none;
-      }
+      //.search-icon {
+      //  display: flex;
+        //align-items: center;
+      //  background-color: #75d9a2; 
+     // }
+      //.search-input::placeholder {
+      //  color: #79267d
+      //}
+      //.search-input:focus {
+      //  outline: none;
+     // }
        button { 
-        background-color: #11dd07; 
+        background-color: #3244a9; 
         color: white;
         border: none;
-        border-radius: 5px;
-        padding: var(--ddd-spacing-1) var(--ddd-spacing-3);
+        border-radius: var(--ddd-radius-xs);
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-2);
         cursor: pointer;
-        margin-right: 10px;
-        transition: background-color 0.3s ease;
+        margin-right: 8px;
       }
 
       button:hover {
@@ -62,20 +59,15 @@ import "./hax-search.js";
         visibility: visible;
         height: 100%;
         opacity: 1;
-        transition-delay: 0.5s;
-        transition: 0.5s all ease-in-out;
-
       }
+
       details {
         margin: 16px;
-        padding: 16px;
-        background-size: cover;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3)
+        padding: var(--ddd-spacing-1);
       }
       summary {
         font-size: 24px;
-        padding: 16px;
+        padding: var(--ddd-spacing-1);
         color: white;
       }
       input {
@@ -86,82 +78,108 @@ import "./hax-search.js";
     `;
   }
 
+  static get properties() {
+    return {
+      url: { type: String },
+      isValid: { type: Boolean, reflect: true },
+      placeholder: { type: String },
+      siteData: { type: Object },
+      items: { type: Array },
+    };
+  }
+
   constructor() {
     super();
     this.url = "";
+    this.isValid = false;
+    this.placeholder = "https://haxtheweb.org/site.json";
     this.siteData = {};
     this.items = [];
-    this.loading = false;
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("url")) {
+      this.isValid = this.url && this.url.endsWith("site.json");
+    }
   }
 
   render() {
-    console.log("test")
     return html`
-      <h2>HAX Site Analyzer</h2>
+      <h2>Analyze a HAX Site</h2>
       <div class="input-section">
-        <input id="input" placeholder="Enter site URL (e.g., https://haxtheweb.org)" @input="${this.inputChanged}" />
-        <button @click="${this.analyzeSite}">Analyze</button>
+        <input
+          type="text"
+          .value="${this.url}"
+          placeholder="${this.placeholder}"
+          @input="${this._updateURL}"
+        />
+        <button ?disabled="${!this.isValid}" @click="${this.analyzeSite}">
+          Analyze
+        </button>
       </div>
 
-      ${this.siteData && Object.keys(this.siteData).length > 0 ? html`
-        <div class="overview">
-          <h3>Site Overview</h3>
-          <p><strong>Name:</strong> ${this.siteData.title || 'N/A'}</p>
-          <p><strong>Description:</strong> ${this.siteData.description || 'N/A'}</p>
-          ${this.siteData.logo ? html`<img src="${this.siteData.logo}" alt="Site Logo" />` : ''}
-          <p><strong>Theme:</strong> ${this.siteData.metadata.theme.name || 'N/A'}</p>
-          <p><strong>Created:</strong> ${this.siteData.created || 'N/A'}</p>
-          <p><strong>Last Updated:</strong> ${this.siteData.updated || 'N/A'}</p>
-          <p><strong>Hex Code:</strong> ${this.siteData.hexCode || 'N/A'}</p>
-          <p><strong>Icon:</strong> ${this.siteData.icon || 'N/A'}</p>
-        </div>
-      ` : ''}
+      <hax-search json-url="${this.url}"></hax-search>
+
+      <!-- Site Overview -->
+      ${this.siteData.title
+        ? html`
+            <div class="overview">
+              <h3>Site Overview</h3>
+              <p><strong>Name:</strong> ${this.siteData.title}</p>
+              <p><strong>Description:</strong> ${this.siteData.description || "N/A"}</p>
+              ${this.siteData.logo
+                ? html`<img src="${this.siteData.logo}" alt="Site Logo" />`
+                : ""}
+              <p><strong>Theme:</strong> ${this.siteData.metadata?.theme?.name || "N/A"}</p>
+              <p><strong>Created:</strong> ${this.siteData.metadata.site.created || "N/A"}</p>
+              <p><strong>Last Updated:</strong> ${this.siteData.updated || "N/A"}</p>
+              <p><strong>Hex Code:</strong> ${this.siteData.hexCode || "N/A"}</p>
+            </div>
+          `
+        : ""}
+      
 
       <div class="results">
-        ${this.items.map(item => html`
-          <site-card
-            title="${item.title || 'Untitled'}"
-            image="${item.image || ''}"
-            description="${item.description || 'No description available.'}"
-            updated="${item.metadata.updated || 'N/A'}"
-            link="${item.slug}"
-            sourceLink="${item.slug}/index.html"
-          ></site-card>
-        `)}
+        ${this.items.map(
+          (item) => html`
+            <site-card
+              title="${item.title || "Untitled"}"
+              image="${item.image || ""}"
+              description="${item.description || "No description available."}"
+              updated="${item.updated || "N/A"}"
+              link="${item.slug}"
+              sourceLink="${item.slug}/index.html"
+            ></site-card>
+          `
+        )}
       </div>
     `;
   }
 
-  inputChanged(e) {
-    this.url = e.target.value;
+  _updateURL(event) {
+    this.url = event.target.value.trim();
   }
 
   async analyzeSite() {
-    if (!this.url) {
-      alert("Please enter a URL.");
+    if (!this.isValid) {
+      alert("Please enter a valid URL ending with 'site.json'.");
       return;
     }
 
-    const siteUrl = this.url.endsWith("site.json") ? this.url : `${this.url}/site.json`;
-
-    this.loading = true;
     try {
-      const response = await fetch(siteUrl);
+      const response = await fetch(this.url);
       if (!response.ok) throw new Error("Failed to fetch site.json");
 
       const data = await response.json();
-      if (!data || !data.metadata || !data.items) {
-        alert("Invalid site.json schema.");
-        this.loading = false;
-        return;
+      if (!data.metadata || !data.items) {
+        throw new Error("Invalid site.json");
       }
 
-      this.siteData = data;
+      this.siteData = data.metadata;
       this.items = data.items;
     } catch (error) {
-      alert("Error fetching or processing site.json: " + error.message);
-    } finally {
-      this.loading = false;
+      console.error(error);
+      alert("Error fetching site.json: " + error.message);
     }
   }
 
@@ -171,5 +189,4 @@ import "./hax-search.js";
 }
 
 customElements.define(SiteAnalyzer.tag, SiteAnalyzer);
-
 
