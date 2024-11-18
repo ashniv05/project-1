@@ -41,16 +41,16 @@ export class HaxSearch extends LitElement {
       }
 
       details {
-        margin: 16px;
-        padding: 16px;
+        margin: var(--ddd-spacing-4);
+        padding: var(--ddd-spacing-4);
         background-color: var(--global-hex-color, #7c69b9);
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        border-radius: var(--ddd-radius-md);
+        box-shadow: var(--ddd-boxShadow-sm);
       }
 
       summary {
         font-size: 24px;
-        padding: 8px;
+        padding: var(--ddd-spacing-2);
         color: white;
       }
 
@@ -58,53 +58,53 @@ export class HaxSearch extends LitElement {
         font-size: 20px;
         line-height: 40px;
         width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        padding: var(--ddd-spacing-2);
+        border: var(-ddd-border-sm) solid var(---ddd-theme-default-white);
+        border-radius: var(--ddd-radius-md);
         box-sizing: border-box;
       }
 
       input:focus {
         outline: none;
-        border-color: #007acc;
-        box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+        border-color: var(--ddd-theme-default-skyBlue);
+        box-shadow: var(--ddd-boxShadow-sm);
       }
 
       button {
-        padding: 8px 16px;
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-4);
         font-size: 16px;
-        color: white;
-        background-color: #007acc;
+        color: var(---ddd-theme-default-white);
+        background-color: var(--ddd-theme-default-coalyGray);
         border: none;
-        border-radius: 4px;
+        border-radius: var(--ddd-radius-md);
         cursor: pointer;
         margin-top: 8px;
       }
 
       button:hover {
-        background-color: #005b99;
+        background-color: var(--ddd-theme-default-slateGray);
       }
 
       .card {
-        margin: 16px;
-        padding: 16px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin: var(--ddd-spacing-4);
+        padding: var(--ddd-spacing-4);
+        border: var(-ddd-border-sm) solid var(---ddd-theme-default-white);
+        border-radius: var(--ddd-radius-md);
+        box-shadow: var(--ddd-boxShadow-sm);
       }
 
       .card h3 {
-        margin: 0 0 8px;
+        margin: var(--ddd-spacing-2);
         font-size: 18px;
       }
 
       .card p {
         font-size: 14px;
-        color: #666;
+        color: var(--ddd-theme-default-limestoneGray);
       }
 
       .card a {
-        color: #007acc;
+        color: var(--ddd-theme-default-skyBlue);
         text-decoration: none;
         font-weight: bold;
       }

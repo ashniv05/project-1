@@ -29,13 +29,13 @@ export class SiteCard extends LitElement {
         display: inline-block;
         min-height: 350px;
         width: 240px;
-        padding: 16px;
+        padding: var(--ddd-spacing-4);
         align-items: center;
-        border: 1px solid #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border: var(-ddd-border-sm) solid var(---ddd-theme-default-white);
+        border-radius: var(--ddd-radius-md);
+        box-shadow: var(--ddd-boxShadow-sm);
         text-align: center;
-        background-color: lightgrey;
+        background-color: var(--ddd-theme-default-white);
         transition: transform 0.2s, box-shadow 0.2s;
         overflow: hidden;
         justify-content: space-between; 
@@ -43,45 +43,45 @@ export class SiteCard extends LitElement {
 
       .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        background-color: #9092d9;
+        box-shadow:var(--ddd-boxShadow-md);;
+        background-color: var(--ddd-theme-default-accent);
       }
 
       .card img {
         max-width: 100%;
         height: auto;
         object-fit: cover;
-        background-color: #f0f0f0;
+        background-color: var(--ddd-theme-default-athertonViolet);
       }
 
       .card h3 {
         font-size: 18px;
-        margin: 8px 0;
-        color: #333;
+        margin: var(--ddd-spacing-2);
+        color: var(--ddd-theme-default-potentialMidnight);
       }
 
       .card p {
         font-size: 14px;
-        color: #666;
+        color: var(--ddd-theme-default-coalyGray);
         text-align: justify;
-        margin: 8px 0;
+        margin: var(--ddd-spacing-2);
       }
 
       .card a {
         display: block;
         margin-top: 8px;
-        padding: 8px 12px;
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-3);
         text-decoration: none;
-        color: white;
-        background-color: #007acc;
-        border-radius: 4px;
+        color: var(--ddd-theme-default-slateMaxLight);
+        background-color: var(--ddd-theme-default-skyBlue);
+        border-radius: var(--ddd-radius-md);
         font-size: 14px;
         font-weight: bold;
         transition: background-color 0.3s ease;
       }
 
       .card a:hover {
-        background-color: #005b99;
+        background-color: var(--ddd-theme-default-slateGray);
       }
     `;
   }
@@ -108,11 +108,11 @@ export class SiteCard extends LitElement {
 
   firstUpdated() {
     console.group(`Site Card: ${this.title}`);
-    console.log('🌐 URL:', this.url);
-    console.log('📝 Description:', this.description);
-    console.log('🎨 Theme:', this.metadata?.theme?.name);
-    console.log('📅 Created:', this.metadata?.site?.created);
-    console.log('🔄 Updated:', this.metadata?.site?.updated);
+    console.log('URL:', this.url);
+    console.log('Description:', this.description);
+    console.log('Theme:', this.metadata?.theme?.name);
+    console.log('Created:', this.metadata?.site?.created);
+    console.log('Updated:', this.metadata?.site?.updated);
     console.log('Full Data:', this);
     console.groupEnd();
   }

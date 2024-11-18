@@ -2,15 +2,6 @@ import { LitElement, html, css } from "lit";
 import { DDDSuper  } from "@haxtheweb/d-d-d";
 import "./site-card.js";
 
- //class SiteAnalyzer extends DDDSuper(LitElement) {
- // static get properties() {
-  //  return {
-    //  url: { type: String },
-      //siteData: { type: Array, attribute: "site-data" },
-     // items: { type: Array },
-      //loading: { type: Boolean },
-    //};
- // }
  class SiteAnalyzer extends DDDSuper(LitElement) {
   static get styles() {
     return css`
@@ -21,54 +12,46 @@ import "./site-card.js";
       .input-section {
         display: flex;
         align-items: center;
-        background-color: #fdf5f5; 
-        border-radius: var(--ddd-radius-sm);
-        border: 1px solid #fff;
+        background-color: var(--ddd-theme-default-white); 
+        border-radius: var(--ddd-radius-md);
+        border: var(-ddd-border-sm) solid var(---ddd-theme-default-white);
         width: 95%;
         padding: var(--ddd-spacing-1) var(--ddd-spacing-3);
-        margin: 10px auto;
+        margin: var(--ddd-spacing-2) auto;
         margin-bottom: 20px;
         gap: 10px;
       }
-      //.search-icon {
-      //  display: flex;
-        //align-items: center;
-      //  background-color: #75d9a2; 
-     // }
-      //.search-input::placeholder {
-      //  color: #79267d
-      //}
-      //.search-input:focus {
-      //  outline: none;
-     // }
+    
        button { 
-        background-color: #3244a9; 
-        color: white;
-        border: none;
+        background-color: var(--ddd-theme-default-navy65); 
+        color: var(--ddd-theme-default-white); 
+        border: var(-ddd-border-lg);
         border-radius: var(--ddd-radius-xs);
-        padding: var(--ddd-spacing-2) var(--ddd-spacing-2);
+        padding: var(--ddd-spacing-2), var(--ddd-spacing-2);
         cursor: pointer;
         margin-right: 8px;
       }
 
       button:hover {
-        background-color: #3999af;
+        background-color: var(--ddd-theme-default-coalyGray);;
       }
 
       .results {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         visibility: visible;
         height: 100%;
         opacity: 1;
       }
 
       details {
-        margin: 16px;
+        margin: var(--ddd-spacing-4);
         padding: var(--ddd-spacing-1);
       }
       summary {
         font-size: 24px;
         padding: var(--ddd-spacing-1);
-        color: white;
+        color: var(--ddd-theme-default-white);
       }
       input {
         font-size: 24px;
@@ -80,16 +63,17 @@ import "./site-card.js";
         display: flex;
         flex-direction: column;
         gap: 8px;
-        background: white;
-        color: black;
-        padding: 16px;
-        border-radius: 8px;
+        background: var(--ddd-theme-default-limestoneGray);
+        color: var(--ddd-theme-default-potential75);
+        padding: var(--ddd-spacing-4);
+        border-radius: var(--ddd-radius-lg);
+        margin-bottom: 20px;
       }
 
       .info-row {
         display: flex;
         align-items: baseline;
-        padding: 4px 0;
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-0);;
         border-bottom: 1px solid var(--site-color-border-light);
       }
 
@@ -107,9 +91,9 @@ import "./site-card.js";
       .card-logo {
         text-align: center;
         margin-bottom: 16px;
-        background: white;
-        padding: 16px;
-        border-radius: 8px;
+        background: var(--ddd-theme-default-white);
+        padding: var(--ddd-spacing-4);
+        border-radius: var(--ddd-radius-md);;
       }
 
       .card-logo img {
@@ -260,7 +244,7 @@ import "./site-card.js";
       }
 
       const data = await response.json();
-      window.alert(JSON.stringify(data, null, 2));
+
 
       // Store the entire data object
       this.siteData = data;

@@ -9,11 +9,11 @@
 
   <style>
     :root {
-    --global-hex-color: #594a8d;
+    --global-hex-color: var(--ddd-theme-default-athertonViolet);
     }
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: var(--ddd-spacing-0);
+      padding: var(--ddd-spacing-0);
     }
     #demo {
       margin: var(--ddd-spacing-2);
@@ -32,12 +32,12 @@
       color: var(--ddd-primary-17);
     }
     .overview {
-    border: 1px solid #ddd;
-    padding: 16px;
-    margin-bottom: 20px;
-    background-color: #fdfdfd;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: var(--ddd-border-md) var(--ddd-theme-default-creekMaxLight);
+    padding: var(--ddd-spacing-4);
+    margin-bottom: var(--ddd-spacing-5);
+    background-color: var(--ddd-theme-default-creekMaxLight);
+    border-radius: var(--ddd-radius-md);
+    box-shadow: var(--ddd-boxShadow-sm);
 }
 .overview img {
     max-width: 100px;
@@ -52,8 +52,8 @@
 
 <body>
   <div id="demo">
-    <h1>project-1-search</h1>
-    <h2>Analyze</h2>
+    <h1>Project 1</h1>
+    <h2>Site Analyzer Search Engine</h2>
     <site-analyzer></site-analyzer>
  
   </div>
