@@ -43,7 +43,7 @@ export class HaxSearch extends LitElement {
       details {
         margin: var(--ddd-spacing-4);
         padding: var(--ddd-spacing-4);
-        background-color: var(--global-hex-color, #7c69b9);
+        background-color: var(--ddd-theme-default-athertonViolet);
         border-radius: var(--ddd-radius-md);
         box-shadow: var(--ddd-boxShadow-sm);
       }
