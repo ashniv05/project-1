@@ -121,6 +121,7 @@ export class HaxSearch extends LitElement {
     this.loading = false;
     this.items = [];
     this.value = "";
+    this.url = "";
   }
 
   render() {
@@ -140,10 +141,10 @@ export class HaxSearch extends LitElement {
       <div class="results">
         ${this.items.map((item) => html`
             <div class="card">
-              <h3>${item.title || "Untitled"}</h3>
+              <h3>${item.title || "Untitled"} </h3>
               <p>${item.description || "No description available."}</p>
               ${item.slug
-                ? html`<a href="${item.slug}" target="_blank">View Page</a>`
+                ? html`<a href="${this.url}/${item.slug}" target="_blank">View Page</a>`
                 : ""}
             </div>
           `

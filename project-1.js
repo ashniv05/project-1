@@ -139,7 +139,7 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
         <!-- Input section for the site URL -->
         <div class="input-section">
           <input id="input" placeholder="Enter site URL (e.g., https://haxtheweb.org)" @input="${this.inputChanged}" />
-          <button @click="${this.analyzeSite}">Analyze</button>
+          <button @click="${this.analyzeSite}">Analyze Site!</button>
         </div>
 
         <!-- Overview section -->
@@ -196,9 +196,17 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
       }
       this.metadata = data.metadata;
       this.items = data.items;
+
+      const iconElement = this.shadowRoot.querySelector('.icon');
+      if (iconElement && this.metadata.theme.icon) {
+        iconElement.setAttribute('icon', this.metadata.theme.icon);
+      }
+
     } catch (error) {
       console.error("Error:", error);
       alert("Error fetching site.json: " + error.message);
+    } finally {
+      this.loading = false;
     }
   }
 

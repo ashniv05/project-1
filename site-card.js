@@ -9,6 +9,7 @@ export class SiteCard extends LitElement {
     this.description = "";
     this.updated = "";
     this.link = "";
+    this.sourceLink = "";
   }
 
   static get properties() {
@@ -18,6 +19,7 @@ export class SiteCard extends LitElement {
       description: { type: String },
       updated: { type: String },
       link: { type: String },
+      sourceLink: { type: String },
     };
   }
 
@@ -48,9 +50,8 @@ export class SiteCard extends LitElement {
       .card img {
         max-width: 100%;
         height: auto;
-        border-radius: 4px;
-        margin-bottom: 12px;
         object-fit: cover;
+        background-color: #f0f0f0;
       }
 
       .card h3 {
@@ -89,19 +90,31 @@ export class SiteCard extends LitElement {
     return html`
       <div class="card" tabindex="0">
         <img
-          src="${this.image || 'https://avatars.githubusercontent.com/u/170651362?s=200&v=4'}"
+          src="${this.image ? new URL('/' + this.image, this.link).href : 'https://avatars.githubusercontent.com/u/170651362?s=200&v=4'}"
           alt="${this.title || 'Default Image'}"
         />
         <h3>${this.title || "Untitled"}</h3>
         <p>${this.description || "No description provided."}</p>
         <p><strong>Last Updated:</strong> ${this.updated || "N/A"}</p>
         <a href="${this.link}" target="_blank">View Page</a>
+        <a href="${this.link ? new URL(this.sourceLink, this.link).href : this.sourceLink}" target="_blank">View Source</a>
       </div>
     `;
   }
 
   static get tag() {
     return "site-card";
+  }
+
+  firstUpdated() {
+    console.group(`Site Card: ${this.title}`);
+    console.log('🌐 URL:', this.url);
+    console.log('📝 Description:', this.description);
+    console.log('🎨 Theme:', this.metadata?.theme?.name);
+    console.log('📅 Created:', this.metadata?.site?.created);
+    console.log('🔄 Updated:', this.metadata?.site?.updated);
+    console.log('Full Data:', this);
+    console.groupEnd();
   }
 }
 
